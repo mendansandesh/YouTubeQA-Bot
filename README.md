@@ -35,73 +35,106 @@ MovieQA-GPT-Bot is a production-ready, Dockerized AI system that lets users ask 
 ```
 movieqa_bot/
 ├── app.py # Entry point for the bot
+├── ui_streamlit.py # UI - Entry point for the bot
 ├── Dockerfile # Docker setup
 ├── docker-compose.yaml # Multi-container orchestration
 ├── requirements.txt # Python dependencies
-├── chroma_db/ # Chroma vector DB files
+├── chroma_db/    # Persisted Chroma vector database files  
+├── vectorstore/  # Chroma indexer logic (manages embedding storage & retrieval)
 ├── transcript/ # Raw movie transcript files
-├── vectorstore/ # Persisted FAISS index
 ├── rag/ # RAG pipeline implementation
-├── docker/ # Docker-specific configs/scripts
 └── README.md # This file
 ```
 
 ---
 
-## ⚙️ Setup & Installation
+## ⚙️ How to Run the Project
 
-### 🧠 Prerequisites
-- Python 3.8+
-- Docker & Docker Compose
+### This project can be run in two ways:
+1. Streamlit UI (ui_streamlit.py) – interactive web interface (recommended)
+2. CLI mode (app.py) – quick terminal-based usage
 
-### 🔧 Local Setup (Without Docker)
+The Docker-based setup is the easiest and most reliable way to run the project.
 
+### Docker-Based Setup (Recommended)
+#### Prerequisites
+- Docker Desktop (or Docker Engine + Docker Compose v2)
+- Git
+
+### Step 1: Clone the Repository
 ```bash
 git clone https://github.com/<your-username>/MovieQA-GPT-Bot.git
 cd MovieQA-GPT-Bot
-python -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-
-# Run app
-python app.py
 ```
 
-### 🐳 Docker-Based Setup (Recommended)
-#### Build and run using Docker Compose
+### Step 2: Build Docker Images (One Time Only)
+You need to build the Docker image only once, or again if requirements.txt or Dockerfile changes.
+```bash
+docker compose build
 ```
-1. docker compose build
-	ONLY Once, at project start or if changes in requirements.txt or Dockerfile
-2.docker compose run --rm app python app.py <YOUTUBE_VIDEO_ID>
-	Every code/test cycle. Instant, no rebuild.
-3. (Optional) export VIDEO_ID=<YOUTUBE_VIDEO_ID> and then docker compose up
-	If you want your service running continuously (e.g. with a web UI).
-4. docker compose down
+---
+### Option A: Run with Streamlit UI (Recommended)
+Start the interactive Streamlit UI:
+```bash
+docker compose up streamlit --no-build
+```
+Open your browser at:
+```bash
+http://localhost:8501
+```
+From the UI you can:
+- Enter a YouTube Video ID
+- Load and index the transcript
+- Ask questions about the video
+- See answers stream in real time
+
+To stop the UI:
+```bash
+Ctrl + C
+docker compose down
+```
+---
+### Option B: Run in CLI Mode (Terminal)
+For quick testing without a UI:
+```bash
+docker compose up app --no-build
+```
+Or run a one-off command with arguments:
+```bash
+docker compose run --rm app python app.py <YOUTUBE_VIDEO_ID> "<QUESTION>"
+```
+Example:
+```bash
+docker compose run --rm app python app.py UUDKEbX5OQw "Why was Chris Gardner arrested?"
+```
+---
+## Cleanup
+Stop and remove all running containers:
+```bash
+docker compose down
 ```
 ---
 🧠 How It Works
 1. Parses and indexes movie transcripts into a Chroma vector store.
-2. User asks a question — e.g., "What does Neo realize at the end of The Matrix?"
+2. User asks a question — e.g., "Why Chris Gardner shirt was dirty?"
 3. Relevant transcript chunks are retrieved via vector similarity.
 4. These chunks + the user query are passed to the LLM (GPT) to generate the answer.
 Answer is returned to the user via CLI or API.
 
 ---
-🧪 Example Queries
+⚠️ Current Limitations
 
-Q: What is the name of the ship Morpheus commands?
-A: The Nebuchadnezzar.
-
-Q: What choice does Neo make at the end?
-A: Neo chooses to sacrifice himself to save others, realizing his purpose.
+- Answers are grounded in retrieved transcript chunks
+- High-level questions like “Summarize the entire video” are limited by chunk-based retrieval
+- Timestamp-based jumping is planned but not yet enabled
 
 ---
 🔮 Future Enhancements
 
-Gradio/Streamlit UI for web-based interface
-Hugging Face Space deployment
-Add support for multi-language transcripts
-Summarization & scene-level search
+- Video-level summarization
+- Timestamp-aware answers with clickable YouTube links
+- Multi-video comparison
+- Improved semantic retrieval and reranking
 
 ---
 🤝 Contributing
