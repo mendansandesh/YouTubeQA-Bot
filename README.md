@@ -1,8 +1,8 @@
-# 🎬 MovieQA-GPT-Bot 🎤
+# 🎬 YouTubeQA-Bot 🎤
 
 > AI-powered Question Answering Bot over Movie Transcripts using RAG (Retrieval-Augmented Generation)
 
-MovieQA-GPT-Bot is a production-ready, Dockerized AI system that lets users ask natural language questions about movie plots or scenes. It uses vector databases and Large Language Models (LLMs) to answer contextually using actual **movie transcripts**.
+YouTubeQA-Bot is a production-ready, Dockerized AI system that lets users ask natural language questions about movie plots or scenes. It uses vector databases and Large Language Models (LLMs) to answer contextually using actual **movie transcripts**.
 
 ---
 
@@ -33,7 +33,7 @@ MovieQA-GPT-Bot is a production-ready, Dockerized AI system that lets users ask 
 ## 📁 Project Structure
 
 ```
-movieqa_bot/
+youtubeqa_bot/
 ├── app.py # Entry point for the bot
 ├── ui_streamlit.py # UI - Entry point for the bot
 ├── Dockerfile # Docker setup
@@ -63,8 +63,8 @@ The Docker-based setup is the easiest and most reliable way to run the project.
 
 ### Step 1: Clone the Repository
 ```bash
-git clone https://github.com/<your-username>/MovieQA-GPT-Bot.git
-cd MovieQA-GPT-Bot
+git clone https://github.com/<your-username>/YouTubeQA-Bot.git
+cd YouTubeQA-Bot
 ```
 
 ### Step 2: Build Docker Images (One Time Only)
