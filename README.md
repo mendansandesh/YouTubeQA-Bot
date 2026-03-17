@@ -76,7 +76,7 @@ You need to build the Docker image only once, or again if requirements.txt or Do
 ```bash
 docker compose build
 ```
----
+
 ### Step 3: Run 
 #### Option A: Run with Streamlit UI (Recommended)
 Start the interactive Streamlit UI:
@@ -98,7 +98,7 @@ To stop the UI:
 Ctrl + C
 docker compose down
 ```
----
+
 #### Option B: Run in CLI Mode (Terminal)
 For quick testing without a UI:
 ```bash
