@@ -2,6 +2,7 @@ import streamlit as st
 import time
 from dotenv import load_dotenv
 import os
+from urllib.parse import urlparse, parse_qs
 
 # Import your existing app methods
 from app import load_and_index_transcript, answer_question
@@ -23,23 +24,49 @@ if "video_id" not in st.session_state:
 if "vectorstore" not in st.session_state:
     st.session_state.vectorstore = None
 
+def extract_video_id(url: str) -> str:
+    try:
+        parsed_url = urlparse(url)
+
+        # Case 1: https://www.youtube.com/watch?v=VIDEO_ID
+        if parsed_url.hostname in ["www.youtube.com", "youtube.com"]:
+            return parse_qs(parsed_url.query).get("v", [None])[0]
+
+        # Case 2: https://youtu.be/VIDEO_ID
+        if parsed_url.hostname == "youtu.be":
+            return parsed_url.path.lstrip("/")
+
+        return None
+    except Exception:
+        return None
+
 # --- Sidebar: Load transcript ---
 with st.sidebar:
     st.header("Load YouTube Transcript")
-    video_id = st.text_input("YouTube Video ID", value=st.session_state.video_id or "")
+    video_url = st.text_input(
+        label="",
+        value=st.session_state.get("video_url", ""),
+        placeholder="Enter YouTube Video URL"
+    )
     
     if st.button("Load Transcript"):
-        if not video_id.strip():
-            st.error("Please enter a valid YouTube video ID.")
+        if not video_url.strip():
+            st.error("Please enter a valid YouTube URL.")
         else:
-            with st.spinner("Fetching and indexing transcript..."):
-                try:
-                    vectorstore = load_and_index_transcript(video_id)
-                    st.session_state.video_id = video_id
-                    st.session_state.vectorstore = vectorstore
-                    st.success("Transcript loaded successfully!")
-                except Exception as e:
-                    st.error(f"Failed to load transcript: {e}")
+            video_id = extract_video_id(video_url)
+
+            if not video_id:
+                st.error("Could not extract video ID. Please enter a valid YouTube URL.")    
+            else:
+                with st.spinner("Fetching and indexing transcript..."):
+                    try:
+                        vectorstore = load_and_index_transcript(video_id)
+                        st.session_state.video_id = video_id
+                        st.session_state.video_url = video_url
+                        st.session_state.vectorstore = vectorstore
+                        st.success("Transcript loaded successfully!")
+                    except Exception as e:
+                        st.error(f"Failed to load transcript: {e}")
 
 # --- Main content (inside your existing file) ---
 st.subheader("Ask a Question")
@@ -68,9 +95,9 @@ else:
                         streamed_text = ""
                         for word in full_answer.split():
                             streamed_text += word + " "
-                            response_placeholder.markdown(f"**Answer:** {streamed_text}▌")
+                            response_placeholder.markdown(f"###Answer: {streamed_text}▌")
                             time.sleep(0.3)
-                        response_placeholder.markdown(f"**Answer:** {streamed_text}")
+                        response_placeholder.markdown(f"###Answer: {streamed_text}")
 
                     except Exception as e:
                         st.error(f"Error while generating answer: {e}")
