@@ -77,7 +77,8 @@ You need to build the Docker image only once, or again if requirements.txt or Do
 docker compose build
 ```
 ---
-### Option A: Run with Streamlit UI (Recommended)
+### Step 3: Run 
+#### Option A: Run with Streamlit UI (Recommended)
 Start the interactive Streamlit UI:
 ```bash
 docker compose up streamlit --no-build
@@ -98,18 +99,14 @@ Ctrl + C
 docker compose down
 ```
 ---
-### Option B: Run in CLI Mode (Terminal)
+#### Option B: Run in CLI Mode (Terminal)
 For quick testing without a UI:
 ```bash
 docker compose up app --no-build
 ```
 Or run a one-off command with arguments:
 ```bash
-docker compose run --rm app python app.py <YOUTUBE_VIDEO_ID> "<QUESTION>"
-```
-Example:
-```bash
-docker compose run --rm app python app.py UUDKEbX5OQw "Why was Chris Gardner arrested?"
+docker compose run --rm app python app.py <YOUTUBE_VIDEO_URL> "<QUESTION>"
 ```
 ---
 ## Cleanup
