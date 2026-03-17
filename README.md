@@ -4,6 +4,10 @@
 
 YouTubeQA-Bot is a production-ready, Dockerized AI system that lets users ask natural language questions about movie plots or scenes. It uses vector databases and Large Language Models (LLMs) to answer contextually using actual **movie transcripts**.
 
+## 🎬 Demo
+
+![Project Demo](assets/project.gif)
+
 ---
 
 ## 🔍 Key Features
