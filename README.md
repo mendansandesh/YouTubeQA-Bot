@@ -116,11 +116,19 @@ docker compose down
 ```
 ---
 🧠 How It Works
-1. Parses and indexes movie transcripts into a Chroma vector store.
-2. User asks a question — e.g., "Why Chris Gardner shirt was dirty?"
-3. Relevant transcript chunks are retrieved via vector similarity.
-4. These chunks + the user query are passed to the LLM (GPT) to generate the answer.
-Answer is returned to the user via CLI or API.
+The system operates in two phases:
+
+#### 1. Indexing Phase (runs after video URL is provided)
+- Fetch transcript from YouTube
+- Split into smaller chunks
+- Generate embeddings using MiniLM
+- Store embeddings in a vector database
+
+#### 2. Query Phase (runs when user asks a question)
+- Convert question into embedding
+- Retrieve relevant transcript chunks
+- Pass context + question to LLM (Flan-T5)
+- Return generated answer
 
 ---
 ⚠️ Current Limitations

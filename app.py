@@ -5,7 +5,6 @@ warnings.filterwarnings("ignore", category=FutureWarning)
 import sys
 from transcript.loader import fetch_transcript_text as fetch_transcript, clean_transcript
 from rag.chunker import chunk_text
-from rag.embedder import embed_chunks
 from rag.qa_engine import generate_answer
 from vectorstore.indexer import (
     get_or_create_collection,
@@ -23,10 +22,8 @@ def load_and_index_transcript(video_id: str):
     print(f"Chunked into {len(chunks)} chunks")
     for chunk in chunks:
         print(f"\n[Chunk {chunk['chunk_id']}]: {chunk['text'][:100]}...\n")
-
-    embeddings = embed_chunks(chunks)
     
-    upsert_chunks(chunks, embeddings, video_id)
+    upsert_chunks(chunks, video_id)
 
     print(f"Indexed {len(chunks)} chunks for video ID {video_id}")
     return chunks

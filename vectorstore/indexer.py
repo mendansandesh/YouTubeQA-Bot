@@ -30,7 +30,7 @@ def delete_video_chunks(video_id: str):
     except Exception as e:
         print(f"Failed to delete chunks for {video_id}: {str(e)}")
 
-def upsert_chunks(chunks: List[Dict], embeddings: List[Dict], video_id: str):
+def upsert_chunks(chunks: List[Dict], video_id: str):
     """
     Inserts new chunks into the Chroma vector store after clearing existing ones.
     """
