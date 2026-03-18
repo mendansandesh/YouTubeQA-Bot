@@ -18,6 +18,29 @@ st.set_page_config(
 st.title("YouTube Video Q&A Assistant")
 st.caption("Ask questions about any YouTube video by loading its transcript!")
 
+st.markdown("""
+<style>
+/* Increase input box font */
+div[data-baseweb="input"] input {
+    font-size: 20px !important;
+    padding: 10px !important;
+}
+
+/* Increase label font */
+label {
+    font-size: 18px !important;
+    font-weight: 600;
+}
+
+/* Increase answer text */
+.answer-text {
+    font-size: 22px;
+    line-height: 1.6;
+    font-weight: 500;
+}
+</style>
+""", unsafe_allow_html=True)
+
 # --- Session state initialization ---
 if "video_id" not in st.session_state:
     st.session_state.video_id = None
@@ -74,7 +97,7 @@ st.subheader("Ask a Question")
 if not st.session_state.get("vectorstore"):
     st.info("Please load a YouTube transcript first using the sidebar.")
 else:
-    question = st.text_input("Enter your question:")
+    question = st.text_input("", placeholder="Enter your question here...", label_visibility="collapsed")
 
     if st.button("Get Answer"):
         if not question or not question.strip():
@@ -95,9 +118,15 @@ else:
                         streamed_text = ""
                         for word in full_answer.split():
                             streamed_text += word + " "
-                            response_placeholder.markdown(f"###Answer: {streamed_text}▌")
+                            response_placeholder.markdown(
+                                f"<div class='answer-text'><b>Answer:</b> {streamed_text}▌</div>",
+                                unsafe_allow_html=True
+                            )
                             time.sleep(0.3)
-                        response_placeholder.markdown(f"###Answer: {streamed_text}")
+                        response_placeholder.markdown(
+                            f"<div class='answer-text'><b>Answer:</b> {streamed_text}▌</div>",
+                            unsafe_allow_html=True
+                        )
 
                     except Exception as e:
                         st.error(f"Error while generating answer: {e}")
