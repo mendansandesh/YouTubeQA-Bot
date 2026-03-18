@@ -38,16 +38,22 @@ YouTubeQA-Bot is a production-ready, Dockerized AI system that lets users ask na
 
 ```
 youtubeqa_bot/
-├── app.py # Entry point for the bot
-├── ui_streamlit.py # UI - Entry point for the bot
-├── Dockerfile # Docker setup
-├── docker-compose.yaml # Multi-container orchestration
-├── requirements.txt # Python dependencies
-├── chroma_db/    # Persisted Chroma vector database files  
-├── vectorstore/  # Chroma indexer logic (manages embedding storage & retrieval)
-├── transcript/ # Raw movie transcript files
-├── rag/ # RAG pipeline implementation
-└── README.md # This file
+├── app.py                 # CLI entry point for indexing + Q&A
+├── ui_streamlit.py        # Streamlit UI for interactive querying
+├── rag/
+│   ├── chunker.py         # Splits transcript into chunks
+│   └── qa_engine.py       # LLM-based answer generation
+├── vectorstore/
+│   └── indexer.py         # Chroma DB setup, indexing, retrieval
+├── transcript/
+│   └── loader.py          # Fetch + clean YouTube transcripts
+├── chroma_db/             # Persistent vector database (auto-generated)
+├── assets/
+│   └── project.gif        # Demo GIF for README
+├── Dockerfile             # Containerization
+├── docker-compose.yaml    # Multi-container setup
+├── requirements.txt       # Dependencies
+└── README.md
 ```
 
 ---
