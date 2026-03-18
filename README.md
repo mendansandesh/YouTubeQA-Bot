@@ -25,13 +25,16 @@ YouTubeQA-Bot is a production-ready, Dockerized AI system that lets users ask na
 ---
 ## 🧰 Tech Stack
 
-| Component                      | Technology / Library                   |
-|--------------------------------|----------------------------------------|
-| Language & Runtime             | Python 3.10+                           |
-| Deployment / Containerization  | Docker                                 |
-| Transcript Loader              | `youtube_transcript_api`               |
-| Chunking & Embedding           | HuggingFace's `all-MiniLM-L6-v2`       |
-| Vector DB                      | Chroma DB                              |
+| Component                    | Technology / Library                         |
+|------------------------------|----------------------------------------------|
+| Language & Runtime           | Python 3.10+                                 |
+| UI / Frontend                | Streamlit                                    |
+| LLM Orchestration            | LangChain                                    |
+| Transcript Loader            | youtube-transcript-api                       |
+| Text Chunking                | Custom chunking logic                        |
+| Embeddings                   | sentence-transformers (all-MiniLM-L6-v2)     |
+| Vector Database              | Chroma DB (persistent local storage)         |
+| Containerization             | Docker                                       |
 
 ---
 ## 📁 Project Structure
